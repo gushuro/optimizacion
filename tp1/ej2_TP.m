@@ -9,13 +9,13 @@ function [h1,h2,h3] = ej2_TP(x,y,b0,k0,c0)
         k = tita(2);
         c = tita(3);
 
-        J = [-k*(exp(b*x).*x), -(exp(b*x)), -ones(N,1)];
-        d = y - k*exp(b*x) - c;
+        J = [-k*(exp(b*x).*x), -(exp(b*x)), -ones(N,1)];    % Matriz J
+        d = y - k*exp(b*x) - c;     % Vector d
         [Q,R] = qr(J);
-        h = R\(Q'*(-d));
+        h = R\(Q'*(-d));            % Resolvemos
         
         tita = tita + h';
-        if (norm(h) < tolerancia)
+        if (norm(h) < tolerancia)   % Si h es suficientemente pequeño, terminamos
             break;
         end
     end
@@ -24,7 +24,7 @@ function [h1,h2,h3] = ej2_TP(x,y,b0,k0,c0)
     h3 = h(3);
     
     xplotear = min(x):0.1:max(x);
-    plot(x,y,'.')
+    plot(x,y,'.');
     hold on;
     plot(xplotear, tita(2) * exp(tita(1)*xplotear) + tita(3));
     hold off;
