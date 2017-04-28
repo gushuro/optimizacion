@@ -29,5 +29,5 @@ function [h1,h2,h3] = ej2_TP(x,y,b0,k0,c0)
     plot(xplotear, tita(2) * exp(tita(1)*xplotear) + tita(3));
     hold off;
     
-    fprintf('La exponencial hallada fue %.2fe^%.2fx + %.2f \n',tita(1), tita(2), tita(3));
+    fprintf('La exponencial hallada fue %.2fe^%.2fx + %.2f \n',tita(2), tita(1), tita(3));
 end
