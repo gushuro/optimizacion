@@ -1,9 +1,9 @@
 function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
-    % busquedaLineal es el metodo para buscar el minimo de phi:
+    % busquedaLineal es el metodo para buscar el minimo de phi (en los primeros tres casos):
     %   1 == fminsearch
     %   2 == fminbnd
     %   3 == grado 0
-    %   4 == inexacta
+    %   4 == inexacta (Armijo)
         
     % opciones=[MaxNumIter, tolGrad, tolIter, gradHess, alpha, beta, theta]
     n = size(x0);       % Dominio de la función
@@ -13,40 +13,48 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
     gradHess = opciones(4); %
    
     if (~gradHess)
-        gradiente = gradNumerico;
+        %gradiente = gradNumerico;
+        gradiente=gradNum(f,x0(1),x0(2));
     end
         
     
     %f = @(x,y) (x-y).^4 + 2*x.^2 + y.^2 - x + 2*y;
 
     x = x0;
-    
-    for i = 1:N
-        i
-        g = gradiente(f, x);
-        d = -g;
+    if (busquedaLineal == 4)
+        armijo
+    else
         
-        % Criterio de parada: Si la norma del gradiente es pequeña.
-        if (norm(d) < tolGrad)
-            break;
+        for i = 1:N
+            i
+            g = gradiente;
+            d = -g;
+            phi= @(t) f(x+t*d);
+            % Criterio de parada: Si la norma del gradiente es pequeña.
+            if (norm(d) < tolGrad)
+                break;
+            end
+            if (busquedaLineal == 1)
+                T = fminsearch(phi, 0);  %% TIRA ERROR
+            elseif (busquedaLineal == 2)
+                T = fminbnd(phi, 0, 1); %% TIRA ERROR
+            elseif 
+                T = triseccion(0,80000,f,x,d); %% PARECE ANDAR BIEN
+            end
+        
+            x = x - T*g;
+       % x(i+1) = x(i)-T*g(1);
+       % y(i+1) = y(i)-T*g(2);
         end
-        if (busquedaLineal == 1)
-            T = fminsearch(@(t) f(x + t*d), 0);
-        elseif (busquedaLineal == 2)
-            T = fminbnd(@(t) f(x + t*d), 0, 1);
-        elseif (busquedaLineal == 3)
-            T = 
-        x(i+1) = x(i)-T*g(1);
-        y(i+1) = y(i)-T*g(2);
     end
     
-    xsurf = -1:0.05:1;
+    %xsurf = -1:0.05:1;
 
-    [X,Y] = meshgrid(xsurf,xsurf);
+    %[X,Y] = meshgrid(xsurf,xsurf);
 
-    Z = f(X,Y);
+    %Z = f(X,Y);
 
-    surf(X,Y, Z);
-    hold on;
-    plot(x,y, 'r+:');
+    %surf(X,Y, Z);
+    %hold on;
+    %plot(x,y, 'r+:');
 end
