@@ -20,7 +20,7 @@ function [a,k] = ej1_TP(x,y)
     A = [ones(N,1), x];
     
     [Q,R] = qr(A'*A);
-    res = R\(Q'*A'*b);
+    res = R\(Q'*A'*b);          % Resolvemos
     
     a = exp(res(2));
     if exit==1
@@ -32,8 +32,8 @@ function [a,k] = ej1_TP(x,y)
     z = y-k*a.^x;
     norma = norm(z)
     xposta = min(x):0.1:max(x);
-    plot(x,y,'.')
+    plot(x,y,'.')               % Graficamos los datos
     hold on;
-    plot(xposta,k*(a.^xposta))
+    plot(xposta,k*(a.^xposta))  % Graficamos la curva encontrada
     hold off;
 end
