@@ -11,7 +11,7 @@ function a2 = a2(f, x0, opciones, gradiente, hessiano) % f es cuadrática: 1/2*x
     end
     x = x0;
     Q = hessiano(zeros(1,n))
-    b = gradiente(zeros(1,n))'
+    b = -gradiente(zeros(1,n))'
     g = Q*x' - b;
     d = -g;
     %f = @(x) (x(1)-x(2)).^4 + 2*x(1).^2 + x(2).^2 - x(1) + 2*x(2);
@@ -28,5 +28,5 @@ function a2 = a2(f, x0, opciones, gradiente, hessiano) % f es cuadrática: 1/2*x
             break;
         end
     end
-    x
+    a2 = x
 end
