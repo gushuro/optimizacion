@@ -1,5 +1,8 @@
 function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
-    % busquedaLineal es el metodo para buscar el minimo de phi (en los primeros tres casos):
+    % busquedaLineal nos permite elegir el metodo para buscar el minimo de 
+    % phi (en los primeros tres casos). El metodo de Armijo no usa dicha 
+    % phi auxiliar.
+    
     %   1 == fminsearch
     %   2 == fminbnd
     %   3 == grado 0
