@@ -28,7 +28,7 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
         x= armijo(f, x, alpha, theta, gradiente); 
     else
         for i = 1:N
-            i
+            i;
             g = gradiente(x);
             d = -g;
             %phi= @(t) f(x+t*d);
@@ -39,7 +39,7 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
             if (busquedaLineal == 1)
                 T = fminsearch(@(t) f(x+t*d), 0);  %% TIRA ERROR
             elseif (busquedaLineal == 2)
-                T = fminsearch(@(t) f(x+t*d), 0); %% TIRA ERROR
+                T = fminbnd(@(t) f(x+t*d), 0, 100); %% TIRA ERROR
             else
                 T = triseccion(0,80000,f,x,d); %% PARECE ANDAR BIEN
             end
