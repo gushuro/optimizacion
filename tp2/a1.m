@@ -59,7 +59,7 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
     %surf(X,Y, Z);
     %hold on;
     %plot(x,y, 'r+:');
-    x
+    a1 = x
    
     f(x)
 end
