@@ -25,7 +25,7 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
         alpha = opciones(5);
         beta = opciones(6);
         theta = opciones(7);
-        armijo(f, x, alpha, theta, gradiente);
+        x= armijo(f, x, alpha, theta, gradiente); 
     else
         for i = 1:N
             i
@@ -60,5 +60,6 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
     %hold on;
     %plot(x,y, 'r+:');
     x
+   
     f(x)
 end
