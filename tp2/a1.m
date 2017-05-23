@@ -14,7 +14,7 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
    
     if (~gradHess)
         %gradiente = gradNumerico;
-        gradiente=gradNum(f,x0(1),x0(2));
+        gradiente=@(x) gradNum(f,x);
     end
         
     
@@ -27,18 +27,18 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
         
         for i = 1:N
             i
-            g = gradiente;
+            g = gradiente(x);
             d = -g;
-            phi= @(t) f(x+t*d);
+            %phi= @(t) f(x+t*d);
             % Criterio de parada: Si la norma del gradiente es pequeña.
             if (norm(d) < tolGrad)
                 break;
             end
             if (busquedaLineal == 1)
-                T = fminsearch(phi, 0);  %% TIRA ERROR
+                T = fminsearch(@(t) f(x+t*d), 0);  %% TIRA ERROR
             elseif (busquedaLineal == 2)
-                T = fminbnd(phi, 0, 1); %% TIRA ERROR
-            elseif 
+                T = fminsearch(@(t) f(x+t*d), 0); %% TIRA ERROR
+            else
                 T = triseccion(0,80000,f,x,d); %% PARECE ANDAR BIEN
             end
         
