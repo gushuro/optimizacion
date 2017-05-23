@@ -9,7 +9,7 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
     %   4 == inexacta (Armijo)
         
     % opciones=[MaxNumIter, tolGrad, tolIter, gradHess, alpha, beta, theta]
-    n = size(x0);       % Dominio de la función
+    n = size(x0,2);       % Dominio de la función
     N = opciones(1);    % Cantidad de Iteraciones
     tolGrad = opciones(2);  %
     tolIter = opciones(3);  %
