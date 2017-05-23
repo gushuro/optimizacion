@@ -5,8 +5,8 @@ function triseccion = triseccion(a0,b0,f,xk,dk)
     while norm(b-a) > tol
         x1 = a + (b-a)/3;
         x2 = a + (b-a)*2/3;
-        phix1 = f(xk(1) + x1*dk(1), xk(2) + x1*dk(2));
-        phix2 = f(xk(1) + x2*dk(1), xk(2) + x2*dk(2));
+        phix1 = f(xk + x1*dk);
+        phix2 = f(xk + x2*dk);
         
         if phix1 < phix2 -tol
             b = x2;

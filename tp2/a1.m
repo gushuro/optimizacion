@@ -18,13 +18,15 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
     end
         
     
-    %f = @(x,y) (x-y).^4 + 2*x.^2 + y.^2 - x + 2*y;
+    %f = @(x) (x(1)-x(2)).^4 + 2*x(1).^2 + x(2).^2 - x(1) + 2*x(2);
 
     x = x0;
     if (busquedaLineal == 4)
-        armijo
+        alpha = opciones(5);
+        beta = opciones(6);
+        theta = opciones(7);
+        armijo(f, x, alpha, theta, gradiente);
     else
-        
         for i = 1:N
             i
             g = gradiente(x);
@@ -57,4 +59,6 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
     %surf(X,Y, Z);
     %hold on;
     %plot(x,y, 'r+:');
+    x
+    f(x)
 end
