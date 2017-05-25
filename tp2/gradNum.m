@@ -1,4 +1,3 @@
-
 function gradNum = gradNum(f,x)
     n = size(x,2);
     h = 0.000001;

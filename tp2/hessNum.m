@@ -1,3 +1,4 @@
+
 function hessNum = hessNum(f,x)
     n = size(x,2);
     h = 0.0001;

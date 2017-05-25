@@ -1,55 +1,51 @@
 function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
     % busquedaLineal nos permite elegir el metodo para buscar el minimo de 
-    % phi (en los primeros tres casos). El metodo de Armijo no usa dicha 
-    % phi auxiliar.
+    % phi (en los primeros tres casos). El metodo de Armijo minimiza f de
+    % otra forma.
     
     %   1 == fminsearch
     %   2 == fminbnd
     %   3 == grado 0
     %   4 == inexacta (Armijo)
         
-    % opciones=[MaxNumIter, tolGrad, tolIter, gradHess, alpha, beta, theta]
-    n = size(x0,2);       % Dominio de la función
+    % opciones=[MaxNumIter, tolGrad, gradHess, alpha, theta]
+    
+    n = size(x0,2);       % Diemnsión del dominio de la función
     N = opciones(1);    % Cantidad de Iteraciones
-    tolGrad = opciones(2);  %
-    tolIter = opciones(3);  %
-    gradHess = opciones(4); %
+    tolGrad = opciones(2);  % Tolerancia para la norma del gradiente
+    gradHess = opciones(3); % Variable binaria que indica si el gradiente o es dato (1) o hay que calcularlo numéricamente (0).
+    
    
     if (~gradHess)
-        %gradiente = gradNumerico;
         gradiente=@(x) gradNum(f,x);
     end
-        
-    
-    %f = @(x) (x(1)-x(2)).^4 + 2*x(1).^2 + x(2).^2 - x(1) + 2*x(2);
 
     x = x0;
     if (busquedaLineal == 4)
-        alpha = opciones(5);
-        beta = opciones(6);
-        theta = opciones(7);
+        alpha = opciones(4);
+        theta = opciones(5);
         x= armijo(f, x, alpha, theta, gradiente); 
     else
         for i = 1:N
             i;
             g = gradiente(x);
             d = -g;
-            %phi= @(t) f(x+t*d);
-            % Criterio de parada: Si la norma del gradiente es pequeña.
+           
+            % Un criterio de parada: Si la norma del gradiente es pequeña.
             if (norm(d) < tolGrad)
                 break;
             end
+            
             if (busquedaLineal == 1)
-                T = fminsearch(@(t) f(x+t*d), 0);  %% TIRA ERROR
+                T = fminsearch(@(t) f(x+t*d), 0);  
             elseif (busquedaLineal == 2)
-                T = fminbnd(@(t) f(x+t*d), 0, 100); %% TIRA ERROR
+                T = fminbnd(@(t) f(x+t*d), -10000, 10000); 
             else
-                T = triseccion(0,80000,f,x,d); %% PARECE ANDAR BIEN
+                T = triseccion(0,10000,f,x,d);
             end
         
             x = x - T*g;
-       % x(i+1) = x(i)-T*g(1);
-       % y(i+1) = y(i)-T*g(2);
+      
         end
     end
     
