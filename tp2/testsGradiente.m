@@ -14,7 +14,7 @@ posta = fminsearch(f, [1,1]);
 resultadosAn = zeros(4,1);
 resultadosNum = zeros(4,1);
 times = zeros(4,2)
-tic
+
 for i = 1:4
     tic;
     for j = 1:200
@@ -48,9 +48,7 @@ set(bar1(2),'DisplayName','Numerico');
 
 addpath('testFunctions/single-objective/')
 times = zeros(4,3)
-posta = fminsearch(@ackley, [1,1]);
 
-tic
 for i = 1:4
     tic;
     for j = 1:100
@@ -61,7 +59,6 @@ end
 
 posta = fminsearch(@ackley, [1,1]);
 
-tic
 for i = 1:4
     tic;
     for j = 1:100
@@ -72,7 +69,7 @@ end
 
 posta = fminsearch(@ackley, [1,1]);
 
-tic
+
 for i = 1:4
     tic;
     for j = 1:1000
@@ -92,17 +89,6 @@ set(bar1(3),'DisplayName','Triseccion');
 set(bar1(4),'DisplayName','Armijo');
 
 
-%% Testeamos Gradiente Conjugado
-
-f = @(x)3*x(2)^2+x(1)^2+2*x(1)*x(2)+x(1)+3*x(2)
-gf = @(x)[2*x(1)+2*x(2)+1,6*x(2)+2*x(1)+3]
-hf = @(x)[2,2;2,6]
-opcAnalitico = [100, 0.001, 1, 0.5, 0.5];
-opcNumerico =  [100, 0.001, 0, 0.5, 0.5];
-
-% Con las derivadas calculadas de manera analítica:
-res1 = a2(f, [1,1], opcAnalitico, gf, hf);
-res2 = a2(f, [1,1], opcNumerico, f, f);
 
 
 
