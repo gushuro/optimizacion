@@ -39,7 +39,7 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
             if (busquedaLineal == 1)
                 T = fminsearch(@(t) f(x+t*d), 0);  
             elseif (busquedaLineal == 2)
-                T = fminbnd(@(t) f(x+t*d), -10000, 10000); 
+                T = fminbnd(@(t) f(x+t*d), 0, 1); 
             else
                 T = triseccion(0,10000,f,x,d);
             end

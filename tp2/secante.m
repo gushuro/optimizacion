@@ -7,8 +7,8 @@ function secante = secante (f, x, gradiente, a0, a1)
     for j = 1:100
         alphaNuevo = alphauno - dphi(alphauno)*(alphauno - alphacero)/(dphi(alphauno) - dphi(alphacero));
         alphacero=alphauno;
-        alphauno=alphaNuevo;
-        if alphauno == alphacero
+        alphauno=max(alphaNuevo,0);
+        if abs(alphauno - alphacero) < 0.001
             break;
         end
     end
