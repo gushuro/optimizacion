@@ -24,7 +24,7 @@ function a1 = a1(f, x0, busquedaLineal, opciones, gradiente)
     if (busquedaLineal == 4)
         alpha = opciones(4);
         theta = opciones(5);
-        x= armijo(f, x, alpha, theta, gradiente); 
+        x= armijo(f, x, alpha, theta, gradiente, tolGrad, N); 
     else
         for i = 1:N
             i;

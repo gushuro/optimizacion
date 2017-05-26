@@ -13,21 +13,84 @@ posta = fminsearch(f, [1,1]);
 
 resultadosAn = zeros(4,1);
 resultadosNum = zeros(4,1);
+times = zeros(4,2)
+tic
+for i = 1:4
+    tic;
+    for j = 1:200
+        resultadosAn(i) = norm(a1(f, [1,1], i, opcAnalitico, gf) - posta); 
+    end
+    times(i,1) = toc;
+end
 
-resultadosAn(1) = norm(a1(f, [1,1], 1, opcAnalitico, gf) - posta);
-resultadosAn(2) = norm(a1(f, [1,1], 2, opcAnalitico, gf) - posta);
-resultadosAn(3) = norm(a1(f, [1,1], 3, opcAnalitico, gf) - posta);
-resultadosAn(4) = norm(a1(f, [1,1], 4, opcAnalitico, gf) - posta);
-
-resultadosNum(1) =norm( a1(f, [1,1], 1, opcNumerico, gf) - posta);
-resultadosNum(2) =norm( a1(f, [1,1], 2, opcNumerico, gf) - posta);
-resultadosNum(3) =norm( a1(f, [1,1], 3, opcNumerico, gf) - posta);
-resultadosNum(4) =norm( a1(f, [1,1], 4, opcNumerico, gf) - posta);
-
-
+for i = 1:4
+    tic;
+    for j = 1:200
+        resultadosNum(i) =norm( a1(f, [1,1], i, opcNumerico, gf) - posta);
+    end
+    times(i,2) = toc;
+end
 
 resultadosAn
 resultadosNum
+
+times
+
+%% Plotear
+busqueda = {'fminsearch', 'fminbnd', 'triseccion', 'armijo'};
+bar1 = bar(times)
+set(gca, 'XTickLabel',busqueda, 'XTick',1:numel(busqueda));
+set(bar1(1),'DisplayName','Analitico');
+set(bar1(2),'DisplayName','Numerico');
+
+
+%% Funciones de prueba
+
+addpath('testFunctions/single-objective/')
+times = zeros(4,3)
+posta = fminsearch(@ackley, [1,1]);
+
+tic
+for i = 1:4
+    tic;
+    for j = 1:100
+        a1(@ackley, [1,1], i, opcNumerico, @ackley); 
+    end
+    times(i,1) = toc;
+end
+
+posta = fminsearch(@ackley, [1,1]);
+
+tic
+for i = 1:4
+    tic;
+    for j = 1:100
+        a1(@eggholder, [1,1], i, opcNumerico, @eggholder); 
+    end
+    times(i,2) = toc;
+end
+
+posta = fminsearch(@ackley, [1,1]);
+
+tic
+for i = 1:4
+    tic;
+    for j = 1:1000
+        a1(@leon, [1,1], i, opcNumerico, @leon); 
+    end
+    times(i,3) = toc;
+end
+
+%% Ploteamos
+
+funcion = {'Ackley', 'Eggholder', 'Leon'};
+bar1 = bar(times')
+set(gca, 'XTickLabel',funcion, 'XTick',1:numel(funcion));
+set(bar1(1),'DisplayName','fminsearch');
+set(bar1(2),'DisplayName','fminbnd');
+set(bar1(3),'DisplayName','Triseccion');
+set(bar1(4),'DisplayName','Armijo');
+
 
 %% Testeamos Gradiente Conjugado
 
