@@ -23,15 +23,8 @@ function a3 = a3(f, x0, opciones, gradiente)
         end
         
         % metodo de la secante
-        alphapri = -100
-        alphaseg = 100
-        for j = 1:N
-            alpha = alphaseg - (g(x+alphaseg*d)*d/g(x+alphaseg*d)*d-g(x+alphapri*d)*d)*(alphaseg - alphapri);
-            alphapri=alphaseg;
-            alphaseg=alpha;
-        end
-               
-        x = x - alpha*g;
+        T = secante(f, x, gradiente, 0, 1);
+        x = x - T*g;
     end
     a3 = x
    
