@@ -27,11 +27,14 @@ function a2 = a2(f, xmin, xmax, N, popsize)
         for i = 1:cuarto
             padre1 = P(i,1:n);
             padre2 = P(mitad-i+1,1:n);
+            %padre1 = P(i,1:n);
+            %padre2 = P(i+1, 1:n);
             [hijo1, hijo2] = crossover(padre1, padre2);
             hijo1 = mutar(hijo1, xmin, xmax);
             hijo2 = mutar(hijo2, xmin, xmax);
             P(mitad+2*i-1, :) = [hijo1, f(hijo1)];
             P(mitad+2*i, :) = [hijo2, f(hijo2)];
+        
         end
         P = sortrows(P,n+1);
         P(1:10, :)
