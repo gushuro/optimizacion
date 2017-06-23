@@ -11,8 +11,8 @@ function a3 = a3(f, xmin, xmax, N, T, plotear)
     
     for i = 1:N
         %a = rand(1,n).*(xmax-xmin) + xmin;
-        a = actualx + randn(1,n)
-        a = min(a, xmax)
+        a = actualx + randn(1,n);
+        a = min(a, xmax);
         a = max(a, xmin);
         if f(a) < actual
             actualx = a;

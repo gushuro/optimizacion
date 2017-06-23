@@ -17,7 +17,7 @@ function [x,fx] = a4(f, xmin, xmax, N, T, plotear)
         
     % A medida que avanzamos, además de reducir la temperatura disminuimos
     % El entorno donde buscamos el próximo x.
-        a = actualx + randn(1,n)*10/(iterationsSinceReset+10)   
+        a = actualx + randn(1,n)*10/(iterationsSinceReset+10);
         a = min(a, xmax);   %Bound checks
         a = max(a, xmin);   %Bound checks
         
@@ -56,7 +56,7 @@ function [x,fx] = a4(f, xmin, xmax, N, T, plotear)
         % Si por acá no estamos viendo mejoras, reiniciamos. Esto, a lo 
         % sumo 20 veces.
         if stepsWithoutImprovement > N/20
-            actualx = rand(1,n).*(xmax-xmin) + xmin
+            actualx = rand(1,n).*(xmax-xmin) + xmin;
             actual = f(actualx);
             iterationsSinceReset = 0;
             stepsWithoutImprovement = 0;
