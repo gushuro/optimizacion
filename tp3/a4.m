@@ -32,7 +32,7 @@ function [x,fx] = a4(f, xmin, xmax, N, T, plotear)
             end
         end
         
-        y(i) = actual;
+        y(i) = actual;      % For plotation purposes only
         
         % Además, si el nuevo punto es globalmente el mejor encontrado,
         % realizamos un pequeño método de descenso desde ese punto
@@ -53,14 +53,16 @@ function [x,fx] = a4(f, xmin, xmax, N, T, plotear)
             T = T*0.985;
         end
         
-        % Si por acá no estamos viendo mejoras, reseteamos. Esto, a lo sumo
-        % 20 veces.
+        % Si por acá no estamos viendo mejoras, reiniciamos. Esto, a lo 
+        % sumo 20 veces.
         if stepsWithoutImprovement > N/20
             actualx = rand(1,n).*(xmax-xmin) + xmin
             actual = f(actualx);
             iterationsSinceReset = 0;
             stepsWithoutImprovement = 0;
             T = Tinicial;
+        else
+            iterationsSinceReset = iterationsSinceReset + 1;
         end
     end
     bestx
@@ -86,7 +88,7 @@ function [x,fx] = a4(f, xmin, xmax, N, T, plotear)
         end
     end
 
-    surf(X,Y, Z);
-    hold on;
+    %surf(X,Y,Z);
+    %hold on;
     %plot(x,y, 'r+:');
 end
