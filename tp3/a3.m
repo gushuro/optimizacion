@@ -6,8 +6,7 @@ function a3 = a3(f, xmin, xmax, N, T)  %RECOCIDO SIMULADO
     actual = best;
     for i = 1:N
         %a = rand(1,n).*(xmax-xmin) + xmin;
-        actualx
-        a = actualx + randn(1,n)*10/sqrt(i)
+        a = actualx + randn(1,n)
         a = min(a, xmax)
         a = max(a, xmin);
         if f(a) < actual
@@ -25,11 +24,7 @@ function a3 = a3(f, xmin, xmax, N, T)  %RECOCIDO SIMULADO
             bestx = actualx;
             best = actual;
         end
-        %T=T*0.99;
-        
-        if mod(i,5)
-            T = T*0.985;
-        end
+        T=T*0.99;
     end
     a3 = bestx;
 end
