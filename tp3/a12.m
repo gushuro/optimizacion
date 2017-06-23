@@ -19,5 +19,6 @@ function [x, fx] = a12(f, xmin, xmax, N, epsilon, x0, plotear)
     
     if plotear
         plot(1:size(y,2), y);
+        set(gca, 'YScale', 'log')
     end
 end

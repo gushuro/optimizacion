@@ -1,9 +1,14 @@
-function a3 = a3(f, xmin, xmax, N, T)  %RECOCIDO SIMULADO
+function a3 = a3(f, xmin, xmax, N, T, plotear)  
+    %RECOCIDO SIMULADO
+    
     n = size(xmin,2);   
     bestx = xmin;
     best = f(bestx);
     actualx = bestx;
     actual = best;
+    
+    y = 1:N;
+    
     for i = 1:N
         %a = rand(1,n).*(xmax-xmin) + xmin;
         a = actualx + randn(1,n)
@@ -19,7 +24,7 @@ function a3 = a3(f, xmin, xmax, N, T)  %RECOCIDO SIMULADO
                 actual = f(a);
             end
         end
-        
+        y(i) = actual;
         if actual < best
             bestx = actualx;
             best = actual;
@@ -27,4 +32,9 @@ function a3 = a3(f, xmin, xmax, N, T)  %RECOCIDO SIMULADO
         T=T*0.99;
     end
     a3 = bestx;
+    
+    if plotear
+        plot(1:N, y)
+        set(gca, 'YScale', 'log')
+    end
 end
