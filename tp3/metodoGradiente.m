@@ -1,4 +1,4 @@
-function metodoGradiente = metodoGradiente(f, x0, busquedaLineal, opciones, gradiente)
+function [xn,fx] = metodoGradiente(f, x0, busquedaLineal, opciones, gradiente)
     % busquedaLineal nos permite elegir el metodo para buscar el minimo de 
     % phi (en los primeros tres casos). El metodo de Armijo minimiza f de
     % otra forma.
@@ -57,7 +57,6 @@ function metodoGradiente = metodoGradiente(f, x0, busquedaLineal, opciones, grad
     %surf(X,Y, Z);
     %hold on;
     %plot(x,y, 'r+:');
-    metodoGradiente = x;
-   
-    f(x)
+    xn= x;
+    fx = f(xn);
 end
