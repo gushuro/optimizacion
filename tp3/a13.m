@@ -8,7 +8,7 @@ function [x,fx] = a13(f, xmin, xmax, N, epsilon, plotear)
     
     for i = 1:N     % Cuántos reinicios.
         x0 = rand(1,n).*(xmax-xmin) + xmin;     % Punto al azar en el dom.
-        [x,fx] = a12(f,xmin, xmax, N/10, epsilon, x0, 1);
+        [x,fx] = a12(f,xmin, xmax, N/10, epsilon, x0, 0);
         if fx < best
             bestx = x;
             best = fx;

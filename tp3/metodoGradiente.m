@@ -1,4 +1,4 @@
-function [xn,fx] = metodoGradiente(f, x0, busquedaLineal, opciones, gradiente)
+function [xn,fx] = metodoGradiente(f, x0, busquedaLineal, opciones, gradiente, xmin, xmax)
     % busquedaLineal nos permite elegir el metodo para buscar el minimo de 
     % phi (en los primeros tres casos). El metodo de Armijo minimiza f de
     % otra forma.
@@ -15,7 +15,8 @@ function [xn,fx] = metodoGradiente(f, x0, busquedaLineal, opciones, gradiente)
     tolGrad = opciones(2);  % Tolerancia para la norma del gradiente
     gradHess = opciones(3); % Variable binaria que indica si el gradiente o es dato (1) o hay que calcularlo numéricamente (0).
     
-   
+    truncar = @(x) min(max(x, xmin), xmax);
+    
     if (~gradHess)
         gradiente=@(x) gradNum(f,x);
     end
@@ -36,14 +37,14 @@ function [xn,fx] = metodoGradiente(f, x0, busquedaLineal, opciones, gradiente)
             end
             
             if (busquedaLineal == 1)
-                T = fminsearch(@(t) f(x+t*d), 0);  
+                T = fminsearch(@(t) f(truncar(x+t*d)), 0);  
             elseif (busquedaLineal == 2)
-                T = fminbnd(@(t) f(x+t*d), 0, 1); 
+                T = fminbnd(@(t) f(truncar(x+t*d)), 0, 1); 
             else
-                T = triseccion(0,10000,f,x,d);
+                T = triseccion(0,100,f,x,d);
             end
         
-            x = x - T*g;
+            x = truncar(x - T*g);
       
         end
     end

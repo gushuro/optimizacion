@@ -58,6 +58,7 @@ function [x,fx] = a2(f, xmin, xmax, N, popsize, plotear)
     
     if plotear
         plot(1:N, y);
+        set(gca, 'YScale', 'log');
     end
     
 end

@@ -1,23 +1,45 @@
 function [x,fx] = a4(f, xmin, xmax, N, T, plotear)  
     %RECOCIDO SIMULADO v2.0
     n = size(xmin,2);   
-    bestx = xmin;       % Tomamos como x0 a xmin.
+    bestx = rand(1,n).*(xmax-xmin) + xmin;       % Tomamos x0 aleatorio.
     best = f(bestx);
     actualx = bestx;
     actual = best;
     Tinicial = T;
+    initialSigma = (xmax-xmin)/3
     
     stepsWithoutImprovement = 0;        %Guardamos cantidad de iteraciones sin mejora global
     iterationsSinceReset = 0;            %Guardamos cantidad de iteraciones desde el último reset.
     
-    y = 1:(N+1);
+    recorridos = zeros(2,N+1);
+    y = 1:(N+1);    
+    
+    %ploteamos función
+    if plotear == 2
+        xsurf = linspace(xmin(1), xmax(1), 100);
+        ysurf = linspace(xmin(2), xmax(2), 100);
+    
+        [X,Y] = meshgrid(xsurf,xsurf);
+        Z = X;
+        for i = 1:size(X,1)
+            size(X,1)-i
+            for j = 1:size(X,2)
+                Z(i,j) = f([X(i,j),Y(i,j)]);
+            end
+        end
+        surf(X,Y,Z);
+        hold on;    
+    end
+
+    
     
     for i = 1:N
-        actualx;    %% Descomentar para ir viendo la evolución de x.
+        actualx    %% Descomentar para ir viendo la evolución de x.
+        %pause(0.001)
         
     % A medida que avanzamos, además de reducir la temperatura disminuimos
     % El entorno donde buscamos el próximo x.
-        a = actualx + randn(1,n)*10/(iterationsSinceReset+10);
+        a = actualx + randn(1,n).*initialSigma/(iterationsSinceReset+10);
         a = min(a, xmax);   %Bound checks
         a = max(a, xmin);   %Bound checks
         
@@ -32,13 +54,22 @@ function [x,fx] = a4(f, xmin, xmax, N, T, plotear)
             end
         end
         
-        y(i) = actual;      % For plotation purposes only
+        
+        % Para graficar ------
+        y(i) = actual;      
+        if plotear == 2
+            recorridos(:,i) = actualx;
+            plot3(recorridos(1,i), recorridos(2,i), y(i), 'r+:');
+        end
+        % Para graficar ------
+        
+        
         
         % Además, si el nuevo punto es globalmente el mejor encontrado,
         % realizamos un pequeño método de descenso desde ese punto
-        if actual < best
+        if actual < best && iterationsSinceReset > 100 
             % log(N) iteraciones de método del gradiente.
-            actualx = metodoGradiente(f, actualx, 2, [log(N), 0.001, 0], f);
+            %actualx = metodoGradiente(f, actualx, 2, [log(N), 0.001, 0], f, xmin, xmax);
             actual = f(actualx);
             bestx = actualx;
             best = actual;
@@ -70,25 +101,19 @@ function [x,fx] = a4(f, xmin, xmax, N, T, plotear)
     
     % Podríamos terminar acá. Pero, en vez de quedarnos con el mejor punto
     % encontrado, buscamos un mínimo local cercano a él. 
-    [x,fx] = metodoGradiente(f, bestx, 2, [N/10, 0.001, 0], f);
+    [x,fx] = metodoGradiente(f, bestx, 2, [N/10, 0.001, 0], f, xmin, xmax)
     y(N+1) = fx;
-    if plotear
+    if plotear == 1
         plot(1:(N+1), y)
         set(gca, 'YScale', 'log')
     end
-    xsurf = xmin(1):0.01:xmax(1);
-    ysurf = xmin(2):0.01:xmax(2);
-    
-    [X,Y] = meshgrid(xsurf,xsurf);
-    Z = X;
-    
-    for i = 1:size(X,1)
-        for j = 1:size(X,2)
-            Z(i,j) = f([X(i,j),Y(i,j)]);
-        end
+    if plotear == 2
+        plot3(x(1), x(2), fx, 'g.:','MarkerSize', 30);
     end
-
-    %surf(X,Y,Z);
-    %hold on;
-    %plot(x,y, 'r+:');
+    
+    
+%    
+%     for i = 1:(N+1)
+%         plot3(recorridos(1,i), recorridos(2,i), y(i), 'r+:');
+%     end
 end
