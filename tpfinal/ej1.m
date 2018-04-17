@@ -11,14 +11,14 @@ function out = ej1(cantVertices)
     xCero = [rCero, titaCero];
     % CantVertices tendrá la cantidad de vértices no (0,0)
     cantVertices = cantVertices - 1;
-    niter = 10;
+    niter = 20;
     
     %r0 = ones(1,cantVertices);
     currentArgMax = [];
     currentMax = 0;
     for i=1:niter
         iteracionesRestantes = niter-i
-        funcObjetivo = @(x) -areaPoligono(x, cantVertices) + 1000*penalizacion(x, cantVertices);   %% hay que ir aumentando la penalización
+        funcObjetivo = @(x) -areaPoligono(x, cantVertices) + 2^i*0.00001*penalizacion(x, cantVertices);   %% hay que ir aumentando la penalización
         rmin = zeros(1,cantVertices);
         rmax = rmin +1;
         titamin= rmin;
@@ -26,9 +26,7 @@ function out = ej1(cantVertices)
        % argmin = a3(funcObjetivo, [rmin, titamin], [rmax,titamax], 10000, 1, false);
         %opcNumerico =  [1000, 0.0001, 0, 0.5, 0.5];
         %argmin=a1(funcObjetivo, x0, 1, opcNumerico, funcObjetivo);
-        xCero
-        [argmin, MIN] = recocidoSimulado(funcObjetivo, [rmin, titamin], [rmax, titamax], 100000, 100, xCero);
-        MIN
+        [argmin, MIN] = recocidoSimulado(funcObjetivo, [rmin, titamin], [rmax, titamax], 400000, 100, xCero);
         % Ploteamos el resultado
 %         rs = argmin(1:cantVertices)
 %         titas = argmin(cantVertices+1:2*cantVertices)
