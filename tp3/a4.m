@@ -6,7 +6,7 @@ function [x,fx] = a4(f, xmin, xmax, N, T, plotear)
     actualx = bestx;
     actual = best;
     Tinicial = T;
-    initialSigma = (xmax-xmin)/3
+    initialSigma = (xmax-xmin)/3;
     
     stepsWithoutImprovement = 0;        %Guardamos cantidad de iteraciones sin mejora global
     iterationsSinceReset = 0;            %Guardamos cantidad de iteraciones desde el último reset.
@@ -34,7 +34,7 @@ function [x,fx] = a4(f, xmin, xmax, N, T, plotear)
     
     
     for i = 1:N
-        actualx    %% Descomentar para ir viendo la evolución de x.
+        %actualx    %% Descomentar para ir viendo la evolución de x.
         %pause(0.001)
         
     % A medida que avanzamos, además de reducir la temperatura disminuimos
@@ -96,12 +96,12 @@ function [x,fx] = a4(f, xmin, xmax, N, T, plotear)
             iterationsSinceReset = iterationsSinceReset + 1;
         end
     end
-    bestx
-    best
+    %bestx
+    %best
     
     % Podríamos terminar acá. Pero, en vez de quedarnos con el mejor punto
     % encontrado, buscamos un mínimo local cercano a él. 
-    [x,fx] = metodoGradiente(f, bestx, 2, [N/10, 0.001, 0], f, xmin, xmax)
+    [x,fx] = metodoGradiente(f, bestx, 2, [N/10, 0.001, 0], f, xmin, xmax);
     y(N+1) = fx;
     if plotear == 1
         plot(1:(N+1), y)
