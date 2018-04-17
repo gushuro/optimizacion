@@ -11,7 +11,7 @@ function out = ej1(cantVertices)
     xCero = [rCero, titaCero];
     % CantVertices tendrá la cantidad de vértices no (0,0)
     cantVertices = cantVertices - 1;
-    niter = 1;
+    niter = 10;
     
     %r0 = ones(1,cantVertices);
     currentArgMax = [];
