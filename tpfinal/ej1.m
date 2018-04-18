@@ -3,8 +3,10 @@ function out = ej1(cantVertices)
 %
 % Syntax: out = ej1(cantVertices)
 %
-% Dada una cantidad cantVertices de lados/vértices, el objetivo es encontrar el polígono que maximiza área.
-% Al ser un problema difícil, utilizaremos  métodos de minimización con penalidad
+% Dada una cantidad cantVertices de lados/vértices, el objetivo es
+% encontrar el mayor área alcanzable por un polígono de dicha cantidad de
+% lados, y diámetro 1.
+% Al ser un problema difícil, utilizaremos métodos de minimización con penalidad
 
     addpath('../tp3/')
     [rCero, titaCero] = generarRegular(cantVertices);
@@ -18,7 +20,7 @@ function out = ej1(cantVertices)
     currentMax = 0;
     for i=1:niter
         iteracionesRestantes = niter-i
-        funcObjetivo = @(x) -areaPoligono(x, cantVertices) + 2^i*0.00001*penalizacion(x, cantVertices);   %% hay que ir aumentando la penalización
+        funcObjetivo = @(x) -areaPoligono(x, cantVertices) + 2^i*1000*penalizacion(x, cantVertices);   %% hay que ir aumentando la penalización
         rmin = zeros(1,cantVertices);
         rmax = rmin +1;
         titamin= rmin;
@@ -33,11 +35,11 @@ function out = ej1(cantVertices)
 %         x = [0, rs.*cos(titas),0];
 %         y = [0, rs.*sin(titas),0];
 %         plot(x,y)
-        argmin
         max = areaPoligono(argmin, cantVertices)
-        if max > currentMax
+        xCero = argmin;
+        if max >= currentMax
             currentMax = max
-            currentArgMax = argmin
+            currentArgMax = argmin;
             rs = currentArgMax(1:cantVertices);
             titas = currentArgMax(cantVertices+1:2*cantVertices);
             x = [0, rs.*cos(titas),0];
@@ -49,5 +51,5 @@ function out = ej1(cantVertices)
     % Ploteamos el resultado
     
     % Área del polígono minimizador
-    out = currentMax
+    out = currentMax;
 end
