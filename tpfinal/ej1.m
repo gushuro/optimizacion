@@ -20,7 +20,7 @@ function out = ej1(cantVertices)
     currentMax = 0;
     for i=1:niter
         iteracionesRestantes = niter-i
-        funcObjetivo = @(x) -areaPoligono(x, cantVertices) + 2^i*1000*penalizacion(x, cantVertices);   %% hay que ir aumentando la penalización
+        funcObjetivo = @(x) -areaPoligono(x, cantVertices) + 2^i*100*penalizacion(x, cantVertices);   %% hay que ir aumentando la penalización
         rmin = zeros(1,cantVertices);
         rmax = rmin +1;
         titamin= rmin;
@@ -35,18 +35,15 @@ function out = ej1(cantVertices)
 %         x = [0, rs.*cos(titas),0];
 %         y = [0, rs.*sin(titas),0];
 %         plot(x,y)
-        max = areaPoligono(argmin, cantVertices)
+        currentMax = areaPoligono(argmin, cantVertices)
         xCero = argmin;
-        if max >= currentMax
-            currentMax = max
-            currentArgMax = argmin;
-            rs = currentArgMax(1:cantVertices);
-            titas = currentArgMax(cantVertices+1:2*cantVertices);
-            x = [0, rs.*cos(titas),0];
-            y = [0, rs.*sin(titas),0];
-            plot(x,y)
-            hold on;
-        end
+        currentArgMax = argmin;
+        rs = currentArgMax(1:cantVertices);
+        titas = currentArgMax(cantVertices+1:2*cantVertices);
+        x = [0, rs.*cos(titas),0];
+        y = [0, rs.*sin(titas),0];
+        plot(x,y)
+        hold on;
     end
     % Ploteamos el resultado
     

@@ -13,11 +13,11 @@ function [rs, titas] = generarRegular(n)
     % Lo movemos para que el último quede en el origen
     ys = ys + 0.5;
     %plot([xs,0, xs(1)], [ys,0, ys(1)]);
-    xs
-    ys
-    rs = sqrt(xs.^2 + ys.^2)
-    titas = atan(ys./xs)
-    titas = mod(titas, pi)
+%     xs
+%     ys
+    rs = sqrt(xs.^2 + ys.^2);
+    titas = atan(ys./xs);
+    titas = mod(titas, pi);
     
-    plot([rs.*cos(titas),0], [rs.*sin(titas),0])
+    plot([rs.*cos(titas),0], [rs.*sin(titas),0]);
 end
