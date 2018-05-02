@@ -2,8 +2,8 @@ function out = ej2(xa, xb, ya, yb, n, L)
 % ej2 - Encuentra la curva formada por un hilo de masa constante a lo largo
 % del horizonte, al ser colgada de dos extremos. 
 %
-% Syntax: out = ej2()
-%
+% Syntax: out = ej2(-0.5,0.5, 4, 4, 300, 1.4)
+% 
 % DESCRIPCIÓN COPADA.
     x = linspace(xa, xb, n);
     objFunction = @(y) integralTrapecios(x, [ya, y, yb]);
@@ -27,5 +27,5 @@ function out = ej2(xa, xb, ya, yb, n, L)
 %     hold on;
     out = [ya, z, yb];
     plot(x, out, 'blue')
-
+    LongitudCuerda = integralTrapecios(x, sqrt(1+diferenciasFinitas(x,out).^2))
 end
