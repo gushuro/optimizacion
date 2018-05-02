@@ -1,7 +1,7 @@
 function pen = penalizacion(x, cantVertices)
     r = x(1:cantVertices);
     tita = x(cantVertices+1:2*cantVertices);
-    penalizacionDiametro = 0;
+    penDiametro = 0;
     
     % Primero penalizamos diametro > 1
     for i=1:cantVertices
@@ -9,12 +9,12 @@ function pen = penalizacion(x, cantVertices)
             dif = r(i)^2 + r(j)^2 - 2*r(i)*r(j)*cos(tita(i)-tita(j)) - 1;
             % Si hay dos vértices a distancia mayor a 1, penalizar
             if dif > 0
-                penalizacionDiametro = penalizacionDiametro + dif^2;
+                penDiametro = penDiametro + dif^2;
             end
         end
         dif = r(i)^2 - 1;
         if dif > 0 
-            penalizacionDiametro = penalizacionDiametro + dif^2;
+            penDiametro = penDiametro + dif^2;
         end
     end
     
@@ -40,6 +40,6 @@ function pen = penalizacion(x, cantVertices)
             penDominio = penDominio + r(i)^2;
         end
     end
-    pen = penalizacionDiametro + penAngulos + penDominio;
+    pen = penDiametro + penAngulos + penDominio;
     
 end

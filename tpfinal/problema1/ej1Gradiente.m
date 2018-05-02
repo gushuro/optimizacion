@@ -7,7 +7,7 @@ function out = ej1Gradiente(cantVertices)
 % encontrar el mayor área alcanzable por un polígono de dicha cantidad de
 % lados, y diámetro 1.
 % Al ser un problema difícil, utilizaremos métodos de minimización con penalidad
-
+    close all;
     %addpath('../../tp3/')
     [rCero, titaCero] = generarRegular(cantVertices);
     xCero = [rCero, titaCero];
