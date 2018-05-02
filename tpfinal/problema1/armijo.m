@@ -2,7 +2,7 @@ function armijo = armijo(f,x0,alpha,theta,gradiente, tolGrad, N)
 
     x = x0;
     
-    for i = 1:3000 % cambiar por MaxNumIter ???????
+    for i = 1:N
         lambda = 1;
         gradEnx = gradiente(x); 
         d = (-theta)*gradEnx;   % elegimos d asi para que cumpla lo pedido

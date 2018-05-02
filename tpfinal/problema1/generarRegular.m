@@ -20,4 +20,5 @@ function [rs, titas] = generarRegular(n)
     titas = mod(titas, pi);
     
     plot([rs.*cos(titas),0], [rs.*sin(titas),0]);
+    hold on;
 end
