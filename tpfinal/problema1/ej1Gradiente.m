@@ -13,7 +13,7 @@ function out = ej1Gradiente(cantVertices)
     xCero = [rCero, titaCero];
     % CantVertices tendrá la cantidad de vértices no (0,0)
     cantVertices = cantVertices - 1;
-    niter = 30;
+    niter = 35;
     
     %r0 = ones(1,cantVertices);
     currentArgMax = [];
@@ -22,17 +22,17 @@ function out = ej1Gradiente(cantVertices)
     disp(print);
     for i=1:niter
         iteracionesRestantes = niter-i
-        funcObjetivo = @(x) -areaPoligono(x, cantVertices) + 2^i*penalizacion(x, cantVertices);   %% hay que ir aumentando la penalización
+        funcObjetivo = @(x) -areaPoligono(x, cantVertices) + 1.5^i*penalizacion(x, cantVertices);   %% hay que ir aumentando la penalización
         rmin = zeros(1,cantVertices);
         rmax = rmin +1;
-        titamin= rmin;
-        titamax = pi*rmax;
-       % argmin = a3(funcObjetivo, [rmin, titamin], [rmax,titamax], 10000, 1, false);
-        %opcNumerico =  [1000, 0.0001, 0, 0.5, 0.5];
-        %argmin=a1(funcObjetivo, x0, 1, opcNumerico, funcObjetivo);
+%         titamin= rmin;
+%         titamax = pi*rmax;
+%         argmin = a3(funcObjetivo, [rmin, titamin], [rmax,titamax], 10000, 1, false);
+%         opcNumerico =  [1000, 0.0001, 0, 0.5, 0.5];
+%         argmin=a1(funcObjetivo, x0, 1, opcNumerico, funcObjetivo);
         gradFuncObjetivo = @(x) gradNum(funcObjetivo,x);
-        argmin = armijo(funcObjetivo, xCero, 0.5, 0.5, gradFuncObjetivo, 0.000001, 10000);
-        % Ploteamos el resultado
+        argmin = armijo(funcObjetivo, xCero, 0.5, 0.5, gradFuncObjetivo, 0.00001, 10000);
+%         Ploteamos el resultado
 %         rs = argmin(1:cantVertices)
 %         titas = argmin(cantVertices+1:2*cantVertices)
 %         x = [0, rs.*cos(titas),0];
@@ -47,7 +47,10 @@ function out = ej1Gradiente(cantVertices)
     titas = currentArgMax(cantVertices+1:2*cantVertices);
     x = [0, rs.*cos(titas),0];
     y = [0, rs.*sin(titas),0]; 
-    plot(x,y)
+    plot(x,y);
+%     plot(2*x,2*y);
+%     plot(3*x,3*y);
+%     plot(4*x,4*y);
     % Área del polígono minimizador
     out = currentMax;
 end
