@@ -1,4 +1,5 @@
 function out = ej1Gradiente(cantVertices)
+global x y
 %ej1 - Calcula el mayor área posible de un polígono de cantVertices lados
 %
 % Syntax: out = ej1Gradiente(cantVertices)
@@ -10,16 +11,21 @@ function out = ej1Gradiente(cantVertices)
     close all;
     %addpath('../../tp3/')
     [rCero, titaCero] = generarRegular(cantVertices);
+%     areaRegular = areaPoligono([rCero, titaCero], cantVertices-1);
+%     rCero = ones(size(rCero))
+%     titaCero = sort(rand(size(rCero))*pi)
     xCero = [rCero, titaCero];
     % CantVertices tendrá la cantidad de vértices no (0,0)
     cantVertices = cantVertices - 1;
-    niter = 35;
+    niter = 50;
     
-    %r0 = ones(1,cantVertices);
     currentArgMax = [];
     currentMax = 0;
-    print = ['El area del regular es: ', num2str(areaPoligono([rCero, titaCero], cantVertices))];
+    
+    areaRegular = areaPoligono([rCero, titaCero], cantVertices);
+    print = ['El area del regular es: ', num2str(areaRegular)];
     disp(print);
+    
     for i=1:niter
         iteracionesRestantes = niter-i
         funcObjetivo = @(x) -areaPoligono(x, cantVertices) + 1.5^i*penalizacion(x, cantVertices);   %% hay que ir aumentando la penalización
@@ -32,12 +38,6 @@ function out = ej1Gradiente(cantVertices)
 %         argmin=a1(funcObjetivo, x0, 1, opcNumerico, funcObjetivo);
         gradFuncObjetivo = @(x) gradNum(funcObjetivo,x);
         argmin = armijo(funcObjetivo, xCero, 0.5, 0.5, gradFuncObjetivo, 0.00001, 10000);
-%         Ploteamos el resultado
-%         rs = argmin(1:cantVertices)
-%         titas = argmin(cantVertices+1:2*cantVertices)
-%         x = [0, rs.*cos(titas),0];
-%         y = [0, rs.*sin(titas),0];
-%         plot(x,y)
         currentMax = areaPoligono(argmin, cantVertices)
         xCero = argmin;
         currentArgMax = argmin;
@@ -47,10 +47,11 @@ function out = ej1Gradiente(cantVertices)
     titas = currentArgMax(cantVertices+1:2*cantVertices);
     x = [0, rs.*cos(titas),0];
     y = [0, rs.*sin(titas),0]; 
+    
     plot(x,y);
-%     plot(2*x,2*y);
-%     plot(3*x,3*y);
-%     plot(4*x,4*y);
+    title(['N=', num2str(cantVertices+1), ' ', '- Gradiente'])
+    legend(strcat('Regular: ', num2str(areaRegular)), strcat('Obtenido: ', num2str(currentMax)))
     % Área del polígono minimizador
+    currentArgMax
     out = currentMax;
 end

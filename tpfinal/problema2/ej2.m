@@ -4,7 +4,7 @@ function out = ej2(xa, xb, ya, yb, n, L)
 %
 % Syntax: out = ej2(-0.5,0.5, 4, 4, 300, 1.4)
 % 
-% DESCRIPCIÓN COPADA.
+    close all;
     x = linspace(xa, xb, n);
     objFunction = @(y) integralTrapecios(x, [ya, y, yb]);
     
@@ -23,8 +23,7 @@ function out = ej2(xa, xb, ya, yb, n, L)
     options.MaxIterations = 10000000;
     options.ConstraintTolerance = 10^-10;
     z = fmincon(objFunction,y0,A,b,Aeq,beq,lb,ub,nonlcon, options);
-%     plot(x, cosh(x), 'red')
-%     hold on;
+
     out = [ya, z, yb];
     plot(x, out, 'blue')
     LongitudCuerda = integralTrapecios(x, sqrt(1+diferenciasFinitas(x,out).^2))

@@ -77,12 +77,7 @@ function [x,fx] = recocidoSimulado(f, xmin, xmax, N, T, xCero)
             iterationsSinceReset = iterationsSinceReset + 1;
         end
     end
-    %bestx
-    best
-    
-    % Podríamos terminar acá. Pero, en vez de quedarnos con el mejor punto
-    % encontrado, buscamos un mínimo local cercano a él. 
-    % ESTO NO AYUDA, HAY QUE VER POR QUÉ.
+
     x = bestx;
     fx = best;
     %[x,fx] = metodoGradiente(f, bestx, 4, [100, 0.001, 0. 0.5, 0.5], f, xmin, xmax)

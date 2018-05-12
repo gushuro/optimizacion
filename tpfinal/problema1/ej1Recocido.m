@@ -1,4 +1,5 @@
 function out = ej1Recocido(cantVertices)
+global x y
 %ej1 - Calcula el mayor área posible de un polígono de cantVertices lados
 %
 % Syntax: out = ej1Recocido(cantVertices)
@@ -13,40 +14,40 @@ function out = ej1Recocido(cantVertices)
     xCero = [rCero, titaCero];
     % CantVertices tendrá la cantidad de vértices no (0,0)
     cantVertices = cantVertices - 1;
-    niter = 10;
+    niter = 30;
     
-    %r0 = ones(1,cantVertices);
     currentArgMax = [];
     currentMax = 0;
+    
+    areaRegular = areaPoligono([rCero, titaCero], cantVertices);
+    print = ['El area del regular es: ', num2str(areaRegular)];    
+    disp(print);
+    
     for i=1:niter
         iteracionesRestantes = niter-i
-        funcObjetivo = @(x) -areaPoligono(x, cantVertices) + 2^i*10*penalizacion(x, cantVertices);   %% hay que ir aumentando la penalización
+        funcObjetivo = @(x) -areaPoligono(x, cantVertices) + 2^i*0.1*penalizacion(x, cantVertices);   %% hay que ir aumentando la penalización
         rmin = zeros(1,cantVertices);
-        rmax = rmin +1;
+        rmax = rmin + 1;
         titamin= rmin;
         titamax = pi*rmax;
-       % argmin = a3(funcObjetivo, [rmin, titamin], [rmax,titamax], 10000, 1, false);
-        %opcNumerico =  [1000, 0.0001, 0, 0.5, 0.5];
-        %argmin=a1(funcObjetivo, x0, 1, opcNumerico, funcObjetivo);
-        [argmin, MIN] = recocidoSimulado(funcObjetivo, [rmin, titamin], [rmax, titamax], 400000, 100, xCero);
-        % Ploteamos el resultado
-%         rs = argmin(1:cantVertices)
-%         titas = argmin(cantVertices+1:2*cantVertices)
-%         x = [0, rs.*cos(titas),0];
-%         y = [0, rs.*sin(titas),0];
-%         plot(x,y)
+        [argmin, MIN] = recocidoSimulado(funcObjetivo, [rmin, titamin]-0.5, [rmax, titamax]+0.5, 1ej00000, 100, xCero);
+
         currentMax = areaPoligono(argmin, cantVertices)
         xCero = argmin;
         currentArgMax = argmin;
-        rs = currentArgMax(1:cantVertices);
-        titas = currentArgMax(cantVertices+1:2*cantVertices);
-        x = [0, rs.*cos(titas),0];
-        y = [0, rs.*sin(titas),0];
         
-        hold on;
     end
     % Ploteamos el resultado
+    rs = currentArgMax(1:cantVertices);
+    titas = currentArgMax(cantVertices+1:2*cantVertices);
+    x = [0, rs.*cos(titas),0];
+    y = [0, rs.*sin(titas),0];
+    
     plot(x,y)
+    title(['N=', num2str(cantVertices+1), ' ', '- Recocido'])
+    legend(strcat('Regular: ', num2str(areaRegular)), strcat('Obtenido: ', num2str(currentMax)))
     % Área del polígono minimizador
+    PenalizacionFinal = penalizacion(currentArgMax, cantVertices)
+    res = currentArgMax
     out = currentMax;
 end
