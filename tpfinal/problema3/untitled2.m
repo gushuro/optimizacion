@@ -1,10 +1,17 @@
-I = imread('coins.png');
-I = imread('foto.jpg');
-I= imread('digits.jpeg');
-% I= imread('wrenches.jpg');
-% I = imread('morron.png');
-I= imread('muscle2z-gray.png');
-% I = rgb2gray(I);
+Image = imread('coins.png');
+Image = imread('foto.jpg');
+% Image = imread('digits.jpeg');
+Image = imread('wrenches.jpg');
+Image = imread('win.jpg');
+Image = imread('milk.jpg');
+% Image = imread('morron.png');
+% Image = imread('muscle2z-gray.png');
+%Image = imread('usa.png');
+if(size(Image,3) > 1)
+    I = rgb2gray(Image);
+else
+    I = Image;
+end
 imshow(I)
 %%
 BW1 = edge(I,'sobel');
@@ -15,7 +22,8 @@ title('Sobel Filter                                   Canny Filter');
 %%
 [BW, threshold] = edge(I, 'canny');
 threshold
-fudgeFactor = 1.5;
+% Menos fudgeFactor nos da más bordes
+fudgeFactor = 0.01;
 BWs = edge(I,'canny', threshold * fudgeFactor);
 figure, imshow(BWs), title('binary gradient mask');
 %%
@@ -23,11 +31,37 @@ se90 = strel('line', 3, 90);
 se0 = strel('line', 3, 0);
 BWsdil = imdilate(BWs, [se90 se0]);
 figure, imshow(BWsdil), title('dilated gradient mask');
-BWdfill = imfill(BWsdil, 'holes');
+%%
+BWdfill =  imfill(BWsdil, 'holes');
 figure, imshow(BWdfill);
 title('binary image with filled holes');
-BWnobord = imclearborder(BWdfill, 4);
-figure, imshow(BWnobord), title('cleared border image');
+%%
+% BWnobord = imclearborder(BWdfill, 4);
+% figure, imshow(BWnobord), title('cleared border image');
+%%
+seD = strel('diamond',1);
+BWfinal = imerode(BWdfill,seD);
+BWfinal = imerode(BWfinal,seD);
+figure, imshow(BWfinal), title('segmented image');
+funcional(I, BWoutline, 10)
+%% Solo para ver visualmente el borde sobre la imagen original.
+BWoutline = bwperim(BWfinal);
+Segout = Image;
+bordeVerde = 0* Image;
+for i=1:size(BWoutline,1)
+    for j=1:size(BWoutline,2)
+        if BWoutline(i,j)
+            bordeVerde(i,j,2)= 255;
+        end
+    end
+end
+Segout = Segout + bordeVerde;
+
+figure, imshow(Segout), title('outlined original image');
+%%
+
+
+
 %%
 A = zeros(size(I));
 tol=20;
@@ -103,4 +137,29 @@ figure;
 imshow(B);
 % imshowpair(B, BW2, 'montage');
 % montage(A);
+
+%%
+fudges = 0.01:0.01:3;
+thresholds = zeros(size(fudges));
+
+min_i = 0;
+min_funcional = inf;
+max_i = 0;
+max_funcional = 0;
+for i=1:size(fudges,2)
+    bordes_imagen = bordes(I, fudges(i));
+    thresholds(i) = funcional(I, bordes_imagen, 1000);
+    if thresholds(i) > max_funcional
+        max_i = i;
+        max_funcional = thresholds(i);
+    end
+    if thresholds(i) < min_funcional
+        min_i = i;
+        min_funcional = thresholds(i);
+    end
+end
+
+plot(fudges, thresholds);
+bordesPlot(I, fudges(min_i));
+bordesPlot(I, fudges(max_i));
             
