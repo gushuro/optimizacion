@@ -1,61 +1,45 @@
-function bordes = bordesPlot(imagen_original, fudge_factor)
-% Calcula una medida sobre una imagen, relacionando tamaño de borde y
-% suavidad. Cuánto más bajo dé, mejor habrá sido la elección de los pixeles
-% marcados como borde
-% Parámetros:
-%
-% imagen_original es la imagen original en Blanco y Negro
-% fudge_factor es el factor por el cual multiplicar el threshold en la
-% búsqueda de bordes.
+function bordesPlot = bordesPlot(imagen_original, sensibilidad)
+% Pintamos los bordes de la imagen de verde
+
     method = 'canny';
-    graficar = true;
     I = imagen_original;
     
     [~, threshold] = edge(I, method);
-    % Menos fudgeFactor nos da más bordes
-    BWs = edge(I, method, threshold * fudge_factor);
-%     figure, imshow(BWs), title('binary gradient mask');
+    % Menos sensibilidad nos da más bordes
+    bordes_matlab = edge(I, method, threshold * sensibilidad);
     
     % Dilatamos bordes para pegar los que quedaron desconectados.
-    se90 = strel('line', 3, 90);
-    se0 = strel('line', 3, 0);
-    BWsdil = imdilate(BWs, [se90 se0]);
-%     figure, imshow(BWsdil), title('dilated gradient mask');
+    seVertical = strel('line', 3, 90);  % 90grados, línea tamaño 3
+    seHorizontal = strel('line', 3, 0); % 0grados, línea tamaño 3
+    bordes_dilatados = imdilate(bordes_matlab, [seVertical seHorizontal]);
 
     % Rellenamos los agujeros.
-    BWdfill =  imfill(BWsdil, 'holes');
-%     figure, imshow(BWdfill);
-%     title('binary image with filled holes');
+    objetos_reconocidos_llenos =  imfill(bordes_dilatados, 'holes');
 
-    % Serruchamos los objetos en la imagen, dos veces.
+    % Serruchamos los objetos en la imagen, dos veces (uno para revertir la
+    % dilatación, otro para poder obtener sus bordes).
     seD = strel('diamond',1);
-    BWfinal = imerode(BWdfill,seD);
-    BWfinal = imerode(BWfinal,seD);
-%     figure, imshow(BWfinal), title('segmented image');
+    objetos_reconocidos_final = imerode(objetos_reconocidos_llenos,seD);
+    objetos_reconocidos_final = imerode(objetos_reconocidos_final,seD);
 
-    BWoutline = bwperim(BWfinal);
-    
-%     funcional(I, BWoutline, 10)
+    borde_objetos = bwperim(objetos_reconocidos_final);
+
 % Solo para ver visualmente el borde sobre la imagen original.
-    if (graficar)
-        Segout = cat(3, I, I, I);
-        bordeVerde = 0*cat(3, I, I, I);
-        for i=1:size(BWoutline,1)
-            for j=1:size(BWoutline,2)
-                if BWoutline(i,j)
-                    bordeVerde(i,j,2)= 255;
-                end
+    imagen_gris = cat(3, I, I, I);
+    bordeVerde = 0*cat(3, I, I, I);
+    for i=1:size(borde_objetos,1)
+        for j=1:size(borde_objetos,2)
+            if borde_objetos(i,j)
+                bordeVerde(i,j,2)= 255;
             end
         end
-%         size(Segout)
-%         size(bordeVerde)
-        Segout = Segout + bordeVerde;
-
-        figure;
-        size(Segout)
-        imshow(Segout);
-        title('outlined original image');
     end
-    bordes = BWoutline;
-end
+    bordeVerde= imdilate(bordeVerde, [seVertical seHorizontal]);
+    imagen_con_bordes = imagen_gris + bordeVerde;
 
+    figure;
+    imshow(imagen_con_bordes);
+    title('outlined original image');
+    bordesPlot = borde_objetos;
+end
+%%

@@ -4,6 +4,7 @@ Image = imread('foto.jpg');
 Image = imread('wrenches.jpg');
 Image = imread('win.jpg');
 Image = imread('milk.jpg');
+Image = imread('images.png');
 % Image = imread('morron.png');
 % Image = imread('muscle2z-gray.png');
 %Image = imread('usa.png');
@@ -139,7 +140,7 @@ imshow(B);
 % montage(A);
 
 %%
-fudges = 0.01:0.01:3;
+fudges = 0.01:0.01:10;
 thresholds = zeros(size(fudges));
 
 min_i = 0;
