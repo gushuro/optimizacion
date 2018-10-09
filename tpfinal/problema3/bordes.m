@@ -25,24 +25,6 @@ function bordes = bordes(imagen_original, sensibilidad)
     objetos_reconocidos_final = imerode(objetos_reconocidos_final,seD);
 
     borde_objetos = bwperim(objetos_reconocidos_final);
-
-% Solo para ver visualmente el borde sobre la imagen original.
-    if (graficar)
-        imagen_gris = cat(3, I, I, I);
-        bordeVerde = 0*cat(3, I, I, I);
-        for i=1:size(borde_objetos,1)
-            for j=1:size(borde_objetos,2)
-                if borde_objetos(i,j)
-                    bordeVerde(i,j,2)= 255;
-                end
-            end
-        end
-        imagen_con_bordes = imagen_gris + bordeVerde;
-
-        figure;
-        imshow(imagen_con_bordes);
-        title('outlined original image');
-    end
     bordes = borde_objetos;
 end
 

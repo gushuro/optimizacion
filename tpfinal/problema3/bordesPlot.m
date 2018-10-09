@@ -25,7 +25,9 @@ function bordesPlot = bordesPlot(imagen_original, sensibilidad)
     borde_objetos = bwperim(objetos_reconocidos_final);
 
 % Solo para ver visualmente el borde sobre la imagen original.
-    imagen_gris = cat(3, I, I, I);
+    % Primero borramos los pixeles donde vamos a marcar bordes
+    I = I.*(uint8(~borde_objetos));
+    imagen_gris = cat(3, I, I, I); % Convertimos la imagen gris a RGB
     bordeVerde = 0*cat(3, I, I, I);
     for i=1:size(borde_objetos,1)
         for j=1:size(borde_objetos,2)
@@ -34,12 +36,13 @@ function bordesPlot = bordesPlot(imagen_original, sensibilidad)
             end
         end
     end
+    
+    % Dilatamos el borde obtenido para que se note más.
     bordeVerde= imdilate(bordeVerde, [seVertical seHorizontal]);
     imagen_con_bordes = imagen_gris + bordeVerde;
 
     figure;
-    imshow(imagen_con_bordes);
-    title('outlined original image');
+    imshowpair(imagen_original, imagen_con_bordes, 'montage');
+    title('Imagen             vs.             Imagen con Bordes');
     bordesPlot = borde_objetos;
 end
-%%
